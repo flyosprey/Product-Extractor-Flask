@@ -27,7 +27,6 @@ ROBOTSTXT_OBEY = True
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 1
 ITEM_PIPELINES = {
-    # 'scrapy.pipelines.images.ImagesPipeline': 1
     'incense.pipelines.IncensePipeline': 300,
 }
 IMAGES_STORE = "/home/vlad/Desktop/incense/images"
