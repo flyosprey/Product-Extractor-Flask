@@ -9,8 +9,10 @@ from scrapy import Item, Field
 class IncenseItem(Item):
     title = Field()
     image_link = Field()
+    deep_link = Field()
     opt_price = Field()
     drop_price = Field()
-    discount_price = Field()
+    retail_price = Field()
     currency = Field()
     status = Field()
+    datetime = Field()
