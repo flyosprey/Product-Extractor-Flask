@@ -1,6 +1,7 @@
 import re
 import scrapy
 import logging
+from datetime import datetime
 from scrapy.crawler import CrawlerProcess
 from incense.items import IncenseItem
 
@@ -21,7 +22,7 @@ class ZamorskiepodarkiSpider(scrapy.Spider):
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
 
-    def parse(self, response):
+    def parse(self, response, **kwargs):
         products = response.xpath("//div[@class='product-layout product-grid']")
         logging.debug("FIRST - %s", self.images)
         for product in products:
@@ -48,20 +49,33 @@ class ZamorskiepodarkiSpider(scrapy.Spider):
         return url
 
     def _get_image(self, response):
+        prices_data = self._get_prices_data(response)
+        general_product_data = self._get_general_product_data(response)
+        logging.debug("IMAGE SHOULD BE DOWNLOADED")
+        incense_item = IncenseItem({**general_product_data, **prices_data})
+        yield incense_item
+
+    @staticmethod
+    def _get_general_product_data(response) -> dict:
+        deep_link, date_of_parsing, status = response.url, datetime.now(), "NEW"
         image_link = response.xpath("//a[@class='thumbnail']/@href").get()
         title = response.xpath("//a[@class='thumbnail']/@title").get()
+        general_product_data = {"deep_link": deep_link, "date_of_parsing": date_of_parsing, "status": status,
+                                "image_link": image_link, "title": title}
+        return general_product_data
+
+    @staticmethod
+    def _get_prices_data(response) -> dict:
         product_div = response.xpath("//div[@id='product']")
         currency = product_div.xpath("..//meta[@itemprop='priceCurrency']//@content").get()
         opt_price = product_div.xpath("..//span[@class='price-new price-opt-new']/b//text()").get()
         opt_price = float(re.search(r"\d+.\d+", opt_price)[0])
         drop_price = round(opt_price * 1.1, 2)
-        discount_price = product_div.xpath("..//span[@class='price-discount']/p//text()").get()
-        discount_price = float(re.search(r"\d+.\d+", discount_price)[0])
-        logging.debug("IMAGE SHOULD BE DOWNLOADED")
-        incense_item = IncenseItem(
-            {"image_link": image_link, "title": title.replace("'", "`"), "currency": currency, "opt_price": opt_price,
-             "drop_price": drop_price, "discount_price": discount_price, "status": "NEW"})
-        yield incense_item
+        retail_price = product_div.xpath("..//div[@class='price-detached price-retail']/span//text()").get()
+        retail_price = float(re.search(r"\d+.\d+", retail_price)[0])
+        prices_data = {"opt_price": opt_price, "drop_price": drop_price, "retail_price": retail_price,
+                       "currency": currency}
+        return prices_data
 
 
 if __name__ == "__main__":
