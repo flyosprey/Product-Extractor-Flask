@@ -46,7 +46,7 @@ class IncensePipeline:
             self.cur.execute("INSERT INTO incense "
                              "(title, image_link, deep_link, opt_price, drop_price, retail_price, currency, "
                              "status, datetime) VALUES ('%(title)s','%(image_link)s','%(deep_link)s',%(opt_price)s,"
-                             "%(drop_price)s,%(retail_price)s,'%(currency)s','%(status)s''%(datetime)s')" % item)
+                             "%(drop_price)s,%(retail_price)s,'%(currency)s','%(status)s''%(date_of_parsing)s')" % item)
             self.connection.commit()
         return item
 

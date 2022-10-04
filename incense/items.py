@@ -15,4 +15,4 @@ class IncenseItem(Item):
     retail_price = Field()
     currency = Field()
     status = Field()
-    datetime = Field()
+    date_of_parsing = Field()
