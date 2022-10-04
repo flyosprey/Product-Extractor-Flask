@@ -3,23 +3,20 @@ import scrapy
 import logging
 from datetime import datetime
 from scrapy.crawler import CrawlerProcess
-from incense.items import IncenseItem
 
 
 class ZamorskiepodarkiSpider(scrapy.Spider):
     name = "zamorskiepodarki"
     allowed_domains = ["zamorskiepodarki.com"]
-    start_urls = ["https://zamorskiepodarki.com/"]
+    start_urls = []
 
-    def __init__(self, **kwargs):
+    def __init__(self, url_to_parse="", **kwargs):
+        self.start_urls.append(url_to_parse)
         super().__init__(**kwargs)
         self.images, self.pages, self.image_index = {"images": []}, None, None
 
     def start_requests(self):
-        urls = [
-            "https://zamorskiepodarki.com/uk/blagovoniya-i-aksessuary/satya/"
-        ]
-        for url in urls:
+        for url in self.start_urls:
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response, **kwargs):
@@ -52,14 +49,14 @@ class ZamorskiepodarkiSpider(scrapy.Spider):
         prices_data = self._get_prices_data(response)
         general_product_data = self._get_general_product_data(response)
         logging.debug("IMAGE SHOULD BE DOWNLOADED")
-        incense_item = IncenseItem({**general_product_data, **prices_data})
+        incense_item = {**general_product_data, **prices_data}
         yield incense_item
 
     @staticmethod
     def _get_general_product_data(response) -> dict:
         deep_link, date_of_parsing, status = response.url, datetime.now(), "NEW"
         image_link = response.xpath("//a[@class='thumbnail']/@href").get()
-        title = response.xpath("//a[@class='thumbnail']/@title").get()
+        title = response.xpath("//a[@class='thumbnail']/@title").get().replace("(", "").replace(")", "")
         general_product_data = {"deep_link": deep_link, "date_of_parsing": date_of_parsing, "status": status,
                                 "image_link": image_link, "title": title}
         return general_product_data
