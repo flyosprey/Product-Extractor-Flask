@@ -23,6 +23,7 @@ class SaveData:
                     date_of_parsing TIMESTAMP
                 )
                 """)
+        self.connection.commit()
 
     def process_item(self, item):
         self.cur.execute("SELECT * FROM incense_flask_dev WHERE title = '%s'" % item['title'])
@@ -40,8 +41,8 @@ class SaveData:
             self.cur.execute("INSERT INTO incense_flask_dev "
                              "(category_name, title, image_link, deep_link, opt_price, drop_price, retail_price, "
                              "currency, status, date_of_parsing) VALUES ('%(category_name)s', '%(title)s', "
-                             "'%(image_link)s', '%(deep_link)s', %(opt_price)s, %(drop_price)s, %(retail_price)s', "
-                             "%(currency)s', '%(status)s', '%(date_of_parsing)s')" % item)
+                             "'%(image_link)s', '%(deep_link)s', %(opt_price)s, %(drop_price)s, %(retail_price)s, "
+                             "'%(currency)s', '%(status)s', '%(date_of_parsing)s')" % item)
         self.connection.commit()
         self.close_spider()
         return item
