@@ -42,26 +42,28 @@
 													<form id="scrape-form" method="post" action="http://127.0.0.1:5000/incense">
 														<input type="text" name="url" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Посилання" /><br />
 														<br />
-														<input id="submitbutton" type="submit" name="submitbutton" value="Оновити" />
+														<input id="extract_data" type="submit" name="submitbutton" value="Оновити" />
 													</form>
 												</div>
 											</ul>
 										</article>
 										<article>
 											<ul class="actions special">
-												<div class="w3-panel w3-card" style="height: 700px;">
+												<div class="w3-panel w3-card" style="height: 800px;">
 													<h1>Подивитись наявні товари</h1>
 													<br />
 													<br />
 													<form id="get-data-form" method="post" action="http://127.0.0.1:5000/incense">
-														<input type="text" name="category" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Категорія" /><br />
-														<input type="text" name="title" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Назва товару" /><br />
-														<input type="text" name="price_from" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Ціна від" /><br />
-														<input type="text" name="price_till" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Ціна до" /><br />
-														<input type="text" name="date_period_hours" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Період часу в годинах" /><br />
-														<input type="text" name="date_period_days" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Період часу в днях" /><br />
+														<input type="text" name="category" style="width: 300px;" placeholder="Категорія" /><br />
+														<input type="text" name="title" style="width: 300px;" placeholder="Назва товару" /><br />
+														<input type="number" step=1 name="price_from" style="width: 300px;" placeholder="Ціна від" /><br />
+														<input type="number" step=1 name="price_till" style="width: 300px;" placeholder="Ціна до" /><br />
+														<input type="text" name="exact_date" style="width: 300px;" placeholder="Дата збору" /><br />
+														<input type="number" step=1 name="date_period_hours" style="width: 300px;" placeholder="Період часу в годинах" /><br />
+														<input type="number" step=1 name="date_period_days" style="width: 300px;" placeholder="Період часу в днях" /><br />
+														<input type="number" step=1 name="limit" style="width: 300px;" required pattern="(\d+)" placeholder="Ліміт" /><br />
 														<br />
-														<input id="submitbutton2" type="submit" name="submitbutton" value="Подивитись" />
+														<input id="show_data" type="submit" name="submitbutton" value="Подивитись" />
 													</form>
 												</div>
 											</ul>
@@ -73,11 +75,11 @@
 									<div class="container">
 									  <h2>Таблиця товарів</h2>
 									  <ul class="responsive-table">
-										<li class="table-header" style="width: 900px;">
+										<li class="table-header" style="width: 800px;">
 										  <div class="col col-1">№</div>
 										  <div class="col col-2">Назва</div>
 										  <div class="col col-3">Опт</div>
-										  <div class="col col-4">Дропшип</div>
+										  <div class="col col-4">Дроп</div>
 										  <div class="col col-4">Роздріб</div>
 										  <div class="col col-4">Валюта</div>
 										  <div class="col col-4">Картинка</div>
@@ -85,7 +87,7 @@
 										  <div class="col col-4">Дата</div>
 										</li>
 										  {% for item in result %}
-											<li class="table-row" style="width: 900px;">
+											<li class="table-row" style="width: 800px;">
 											  <div class="col col-1" data-label="Номер">{{ item[0] }}</div>
 											  <div class="col col-2" data-label="Назва">{{ item[1] }}</div>
 											  <div class="col col-3" data-label="Оптова ціна"><span class="green">{{ item[4] }}</span></div>
