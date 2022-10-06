@@ -56,12 +56,12 @@
 													<form id="get-data-form" method="post" action="http://127.0.0.1:5000/incense">
 														<input type="text" name="category" style="width: 300px;" placeholder="Категорія" /><br />
 														<input type="text" name="title" style="width: 300px;" placeholder="Назва товару" /><br />
-														<input type="number" step=1 name="price_from" style="width: 300px;" placeholder="Ціна від" /><br />
-														<input type="number" step=1 name="price_till" style="width: 300px;" placeholder="Ціна до" /><br />
-														<input type="text" name="exact_date" style="width: 300px;" placeholder="Дата збору" /><br />
-														<input type="number" step=1 name="date_period_hours" style="width: 300px;" placeholder="Період часу в годинах" /><br />
-														<input type="number" step=1 name="date_period_days" style="width: 300px;" placeholder="Період часу в днях" /><br />
-														<input type="number" step=1 name="limit" style="width: 300px;" required pattern="(\d+)" placeholder="Ліміт" /><br />
+														<input type="number" name="price_from" pattern="(\d+)" style="width: 300px;" placeholder="Ціна від" /><br />
+														<input type="number" name="price_till" pattern="(\d+)" style="width: 300px;" placeholder="Ціна до" /><br />
+														<input type="text" name="exact_date" pattern="(\d+\.\d+\.\d+)" style="width: 300px;" placeholder="Дата збору" /><br />
+														<input type="number" name="date_period_hours" pattern="(\d+)" style="width: 300px;" placeholder="Період часу в годинах" /><br />
+														<input type="number" name="date_period_days" pattern="(\d+)" style="width: 300px;" placeholder="Період часу в днях" /><br />
+														<input type="number" name="limit" style="width: 300px;" required pattern="(\d+)" placeholder="Ліміт" /><br />
 														<br />
 														<input id="show_data" type="submit" name="submitbutton" value="Подивитись" />
 													</form>
