@@ -56,12 +56,12 @@
 													<form id="get-data-form" method="post" action="http://127.0.0.1:5000/incense">
 														<input type="text" name="category" style="width: 300px;" placeholder="Категорія" /><br />
 														<input type="text" name="title" style="width: 300px;" placeholder="Назва товару" /><br />
-														<input type="number" name="price_from" pattern="(\d+)" style="width: 300px;" placeholder="Ціна від" /><br />
-														<input type="number" name="price_till" pattern="(\d+)" style="width: 300px;" placeholder="Ціна до" /><br />
+														<input type="text" name="price_from" pattern="(\d+)" style="width: 300px;" placeholder="Ціна від" /><br />
+														<input type="text" name="price_till" pattern="(\d+)" style="width: 300px;" placeholder="Ціна до" /><br />
 														<input type="text" name="exact_date" pattern="(\d+\.\d+\.\d+)" style="width: 300px;" placeholder="Дата збору" /><br />
-														<input type="number" name="date_period_hours" pattern="(\d+)" style="width: 300px;" placeholder="Період часу в годинах" /><br />
-														<input type="number" name="date_period_days" pattern="(\d+)" style="width: 300px;" placeholder="Період часу в днях" /><br />
-														<input type="number" name="limit" style="width: 300px;" required pattern="(\d+)" placeholder="Ліміт" /><br />
+														<input type="text" name="date_period_hours" pattern="(\d+)" style="width: 300px;" placeholder="Період часу в годинах" /><br />
+														<input type="text" name="date_period_days" pattern="(\d+)" style="width: 300px;" placeholder="Період часу в днях" /><br />
+														<input type="text" name="limit" style="width: 300px;" required pattern="(\d+)" placeholder="Ліміт" /><br />
 														<br />
 														<input id="show_data" type="submit" name="submitbutton" value="Подивитись" />
 													</form>
@@ -89,14 +89,14 @@
 										  {% for item in result %}
 											<li class="table-row" style="width: 800px;">
 											  <div class="col col-1" data-label="Номер">{{ item[0] }}</div>
-											  <div class="col col-2" data-label="Назва">{{ item[1] }}</div>
-											  <div class="col col-3" data-label="Оптова ціна"><span class="green">{{ item[4] }}</span></div>
-											  <div class="col col-4" data-label="Дропшипінгова ціна"><span class="yellow">{{ item[5] }}</span></div>
-											  <div class="col col-4" data-label="Роздрібна ціна"><span class="red">{{ item[6] }}</span></div>
-											  <div class="col col-4" data-label="Валюта">{{ item[7] }}</div>
-											  <div class="col col-4" data-label="Посилання на картинку"><a href="{{ item[2] }}">Картинка</a></div>
-											  <div class="col col-4" data-label="Посилання на сайт"><a href="{{ item[3] }}">Товар</a></div>
-											  <div class="col col-4" data-label="Дата збору товара">{{ item[9] }}</div>
+											  <div class="col col-2" data-label="Назва">{{ item[2] }}</div>
+											  <div class="col col-3" data-label="Оптова ціна"><span class="green">{{ item[5] }}</span></div>
+											  <div class="col col-4" data-label="Дропшипінгова ціна"><span class="yellow">{{ item[6] }}</span></div>
+											  <div class="col col-4" data-label="Роздрібна ціна"><span class="red">{{ item[7] }}</span></div>
+											  <div class="col col-4" data-label="Валюта">{{ item[8] }}</div>
+											  <div class="col col-4" data-label="Посилання на картинку"><a href="{{ item[3] }}">Картинка</a></div>
+											  <div class="col col-4" data-label="Посилання на сайт"><a href="{{ item[4] }}">Товар</a></div>
+											  <div class="col col-4" data-label="Дата збору товара">{{ item[10] }}</div>
 											</li>
 										  {% endfor %}
 									  </ul>
