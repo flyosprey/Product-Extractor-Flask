@@ -1,5 +1,5 @@
-import crochet
 import time
+import crochet
 from scrapy import signals
 from scrapy.signalmanager import dispatcher
 from scrapy.crawler import CrawlerRunner
@@ -8,7 +8,7 @@ from flask_app.database_dispatcher import DatabaseDispatcher
 from models import SaveData
 
 crochet.setup()
-crawl_runner = CrawlerRunner()
+CRAWL_RUNNER = CrawlerRunner()
 
 
 class ScrapySide:
@@ -19,8 +19,7 @@ class ScrapySide:
         self.scrape_with_crochet(url_to_parse=url_to_parse)
         while self.scrape_complete is False:
             time.sleep(5)
-        query = "SELECT * FROM incense_flask_dev ORDER BY date_of_parsing DESC LIMIT %s" % self.number_of_items
-        result = DatabaseDispatcher().get_data(query)
+        result = DatabaseDispatcher().get_extracted_data(self.number_of_items)
         return result
 
     def crawler_result(self, item):
@@ -31,7 +30,7 @@ class ScrapySide:
     @crochet.run_in_reactor
     def scrape_with_crochet(self, url_to_parse):
         dispatcher.connect(self.crawler_result, signal=signals.item_scraped)
-        eventual = crawl_runner.crawl(ZamorskiepodarkiSpider, url_to_parse=url_to_parse)
+        eventual = CRAWL_RUNNER.crawl(ZamorskiepodarkiSpider, url_to_parse=url_to_parse)
         eventual.addCallback(self.finished_scrape)
         return eventual
 

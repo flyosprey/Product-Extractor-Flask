@@ -1,7 +1,7 @@
 import re
-import scrapy
 import logging
 from datetime import datetime
+import scrapy
 from scrapy.crawler import CrawlerProcess
 from incense.spiders.init_spider import get_headers
 

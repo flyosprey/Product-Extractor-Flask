@@ -1,5 +1,5 @@
-import psycopg2
 import logging
+import psycopg2
 from credentials import HOSTNAME, USERNAME, PASSWORD, DATABASE
 
 
@@ -29,7 +29,7 @@ class SaveData:
         self.cur.execute("SELECT * FROM incense_flask_dev WHERE title = '%s'" % item['title'])
         result = self.cur.fetchone()
         if result:
-            logging.debug("ITEM IS ALREADY IN EXIST: '%s'" % item['title'])
+            logging.debug("ITEM IS ALREADY IN EXIST: '%s'", item['title'])
             self.cur.execute("UPDATE incense_flask_dev SET status = 'OLD', "
                              "opt_price = %(opt_price)s, "
                              "drop_price = %(drop_price)s, "

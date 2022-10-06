@@ -1,15 +1,20 @@
-from credentials import HOSTNAME, USERNAME, PASSWORD, DATABASE
-import psycopg2
 import logging
+import psycopg2
+from credentials import HOSTNAME, USERNAME, PASSWORD, DATABASE
 
 
 class DatabaseDispatcher:
     INT_TYPE_FIELDS = ('price_from', 'price_till', 'date_period_hours', 'date_period_days', 'limit')
 
-    def get_data_from_database(self, filters):
+    def get_exist_data(self, filters):
         where_query_part, limit = self._build_where_query_part(filters)
         full_query = self._build_full_query(where_query_part, limit)
         return 1
+
+    def get_extracted_data(self, limit):
+        query = "SELECT * FROM incense_flask_dev ORDER BY date_of_parsing DESC LIMIT %s" % limit
+        result = self._get_data(query)
+        return result
 
     @staticmethod
     def _build_full_query(where_query_part, limit):
@@ -36,7 +41,7 @@ class DatabaseDispatcher:
         return where_query_part, limit
 
     @staticmethod
-    def get_data(query):
+    def _get_data(query):
         connection = psycopg2.connect(host=HOSTNAME, user=USERNAME, password=PASSWORD, dbname=DATABASE)
         cur = connection.cursor()
         logging.debug("CONNECTED TO DB")
