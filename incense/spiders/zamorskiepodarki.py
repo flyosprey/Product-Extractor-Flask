@@ -55,10 +55,12 @@ class ZamorskiepodarkiSpider(scrapy.Spider):
     @staticmethod
     def _get_general_product_data(response) -> dict:
         deep_link, date_of_parsing, status = response.url, datetime.now(), "NEW"
+        category_name = \
+            response.xpath("//ul[@class='breadcrumb']//li[@itemprop='itemListElement']//span/text()")[-1].get()
         image_link = response.xpath("//a[@class='thumbnail']/@href").get()
         title = response.xpath("//a[@class='thumbnail']/@title").get().replace("(", "").replace(")", "")
         general_product_data = {"deep_link": deep_link, "date_of_parsing": date_of_parsing, "status": status,
-                                "image_link": image_link, "title": title}
+                                "image_link": image_link, "title": title, "category_name": category_name.strip()}
         return general_product_data
 
     @staticmethod
