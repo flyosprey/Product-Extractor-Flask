@@ -76,21 +76,14 @@ class DatabaseDispatcher:
 
 class ScrapySide:
     def __init__(self):
-        self.scrape_complete, self.number_of_items = False, 0
+        self.scrape_complete, self.number_of_items = False, 1
 
     def parse_data(self, url_to_parse):
         self.scrape_with_crochet(url_to_parse=url_to_parse)
         while self.scrape_complete is False:
             time.sleep(5)
-        result = self._get_parsed_data()
-        return result
-
-    def _get_parsed_data(self):
-        connection = psycopg2.connect(host=HOSTNAME, user=USERNAME, password=PASSWORD, dbname=DATABASE)
-        cur = connection.cursor()
-        logging.debug("CONNECTED TO DB")
-        cur.execute("SELECT * FROM incense_flask_dev1 ORDER BY date_of_parsing DESC LIMIT %s" % self.number_of_items)
-        result = cur.fetchall()
+        query = "SELECT * FROM incense_flask_dev ORDER BY date_of_parsing DESC LIMIT %s" % self.number_of_items
+        result = DatabaseDispatcher().get_data(query)
         return result
 
     def crawler_result(self, item):
