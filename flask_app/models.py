@@ -28,7 +28,12 @@ class SaveData:
         result = self.cur.fetchone()
         if result:
             logging.debug("ITEM IS ALREADY IN EXIST: '%s'" % item['title'])
-            self.cur.execute("UPDATE incense_flask_dev1 SET status = 'OLD' WHERE title = '%s'" % (item['title'],))
+            self.cur.execute("UPDATE incense_flask_dev1 SET status = 'OLD', "
+                             "opt_price = %(opt_price)s, "
+                             "drop_price = %(drop_price)s, "
+                             "retail_price = %(retail_price)s, "
+                             "date_of_parsing = '%(date_of_parsing)s' "
+                             "WHERE title = '%(title)s'" % item)
         else:
             logging.debug("INSERTING ITEM")
             self.cur.execute("INSERT INTO incense_flask_dev1 "
