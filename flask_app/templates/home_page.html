@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Massively by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href=" {{ url_for('static',filename='styles/home_page/main.css') }}" />
+		<link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/home_page/table_results.css') }}">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+		<noscript><link rel="stylesheet" href="{{ url_for('static',filename='styles/home_page/noscript.css') }}" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Коханій дружині</a>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Featured Post -->
+							<article class="post featured">
+								<section>
+									<header class="major">
+										<h2>Функції</h2>
+									</header>
+									<div class="features">
+										<article>
+											<ul class="actions special">
+												<div class="w3-panel w3-card" style="height: 400px;">
+													<h1>Оновити каталог товарів</h1>
+													<br />
+													<br />
+													<form id="scrape-form" method="post" action="http://127.0.0.1:5000/incense">
+														<input type="text" name="url" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Посилання" /><br />
+														<br />
+														<input id="submitbutton" type="submit" name="submitbutton" value="Оновити" />
+													</form>
+												</div>
+											</ul>
+										</article>
+										<article>
+											<ul class="actions special">
+												<div class="w3-panel w3-card" style="height: 700px;">
+													<h1>Подивитись наявні товари</h1>
+													<br />
+													<br />
+													<form id="get-data-form" method="post" action="http://127.0.0.1:5000/incense">
+														<input type="text" name="category" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Категорія" /><br />
+														<input type="text" name="title" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Назва товару" /><br />
+														<input type="text" name="price_from" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Ціна від" /><br />
+														<input type="text" name="price_till" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Ціна до" /><br />
+														<input type="text" name="date_period_hours" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Період часу в годинах" /><br />
+														<input type="text" name="date_period_days" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Період часу в днях" /><br />
+														<br />
+														<input id="submitbutton2" type="submit" name="submitbutton" value="Подивитись" />
+													</form>
+												</div>
+											</ul>
+										</article>
+									</div>
+								</section>
+								<br/>
+								{% if result %}
+									<div class="container">
+									  <h2>Таблиця товарів</h2>
+									  <ul class="responsive-table">
+										<li class="table-header" style="width: 900px;">
+										  <div class="col col-1">№</div>
+										  <div class="col col-2">Назва</div>
+										  <div class="col col-3">Опт</div>
+										  <div class="col col-4">Дропшип</div>
+										  <div class="col col-4">Роздріб</div>
+										  <div class="col col-4">Валюта</div>
+										  <div class="col col-4">Картинка</div>
+										  <div class="col col-4">Сайт</div>
+										  <div class="col col-4">Дата</div>
+										</li>
+										  {% for item in result %}
+											<li class="table-row" style="width: 900px;">
+											  <div class="col col-1" data-label="Номер">{{ item[0] }}</div>
+											  <div class="col col-2" data-label="Назва">{{ item[1] }}</div>
+											  <div class="col col-3" data-label="Оптова ціна"><span class="green">{{ item[4] }}</span></div>
+											  <div class="col col-4" data-label="Дропшипінгова ціна"><span class="yellow">{{ item[5] }}</span></div>
+											  <div class="col col-4" data-label="Роздрібна ціна"><span class="red">{{ item[6] }}</span></div>
+											  <div class="col col-4" data-label="Валюта">{{ item[7] }}</div>
+											  <div class="col col-4" data-label="Посилання на картинку"><a href="{{ item[2] }}">Картинка</a></div>
+											  <div class="col col-4" data-label="Посилання на сайт"><a href="{{ item[3] }}">Товар</a></div>
+											  <div class="col col-4" data-label="Дата збору товара">{{ item[9] }}</div>
+											</li>
+										  {% endfor %}
+									  </ul>
+									</div>
+								{% endif %}
+							</article>
+					</div>
+				<!-- Copyright -->
+					<div id="copyright">
+			</div>
+
+		<!-- Scripts -->
+			<script src="{{ url_for('static',filename='js/home_page/jquery.min.js') }}"></script>
+			<script src="{{ url_for('static',filename='js/home_page/jquery.scrollex.min.js') }}"></script>
+			<script src="{{ url_for('static',filename='js/home_page/jquery.scrolly.min.js') }}"></script>
+			<script src="{{ url_for('static',filename='js/home_page/browser.min.js') }}"></script>
+			<script src="{{ url_for('static',filename='js/home_page/breakpoints.min.js') }}"></script>
+			<script src="{{ url_for('static',filename='js/home_page/util.js') }}"></script>
+			<script src="{{ url_for('static',filename='js/home_page/main.js') }}"></script>
+
+	</body>
+</html>
