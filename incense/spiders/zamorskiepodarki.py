@@ -3,6 +3,7 @@ import scrapy
 import logging
 from datetime import datetime
 from scrapy.crawler import CrawlerProcess
+from incense.spiders.init_spider import get_headers
 
 
 class ZamorskiepodarkiSpider(scrapy.Spider):
@@ -11,13 +12,14 @@ class ZamorskiepodarkiSpider(scrapy.Spider):
     start_urls = []
 
     def __init__(self, url_to_parse="", **kwargs):
+        self.headers = get_headers()
         self.start_urls.append(url_to_parse)
         super().__init__(**kwargs)
         self.images, self.pages, self.image_index = {"images": []}, None, None
 
     def start_requests(self):
         for url in self.start_urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+            yield scrapy.Request(url=url, headers=self.headers, callback=self.parse)
 
     def parse(self, response, **kwargs):
         products = response.xpath("//div[@class='product-layout product-grid']")
@@ -25,16 +27,16 @@ class ZamorskiepodarkiSpider(scrapy.Spider):
         for product in products:
             logging.debug("URL - %s", response.url)
             product_link = product.xpath("div[@class='product-thumb']//div[@class='image']/a/@href").get()
-            yield scrapy.Request(url=product_link, callback=self._get_image)
+            yield scrapy.Request(url=product_link, headers=self.headers, callback=self._get_image)
         next_page_url = self._next_page_url(response)
         if next_page_url:
-            yield scrapy.Request(url=next_page_url, callback=self.parse)
+            yield scrapy.Request(url=next_page_url, headers=self.headers, callback=self.parse)
 
     def _extract_images_link(self, response):
         products = response.xpath("//div[@class='product-layout product-grid']")
         for product in products:
             product_link = product.xpath("div[@class='product-thumb']//div[@class='image']/a/@href").get()
-            yield scrapy.Request(url=product_link, callback=self._get_image)
+            yield scrapy.Request(url=product_link, headers=self.headers, callback=self._get_image)
 
     @staticmethod
     def _next_page_url(response) -> str or None:
