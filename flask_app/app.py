@@ -4,15 +4,19 @@ from flask_restful import Resource
 from flask_app.settings import APP, API
 from flask_app.scrapy_side import ScrapySide
 from flask_app.database_dispatcher import DatabaseDispatcher
+from flask import redirect, url_for, session
+from decorators import logout_required, login_required
 
 
 class MainPage(Resource):
     DEFAULT_HEADERS = {'Content-Type': 'text/html'}
 
+    @login_required
     def get(self):
         rendered_result = render_template("home_page.html")
         return make_response(rendered_result, status.HTTP_200_OK, self.DEFAULT_HEADERS)
 
+    @login_required
     def post(self):
         extract_args = request.form if "url" in request.form else None
         show_args = request.form if "limit" in request.form else None
@@ -30,7 +34,45 @@ class MainPage(Resource):
             return {"result": "BAD REQUEST!"}, status.HTTP_400_BAD_REQUEST
 
 
-API.add_resource(MainPage, "/incense")
+class LoginPage(Resource):
+    DEFAULT_HEADERS = {'Content-Type': 'text/html'}
+
+    @logout_required
+    def get(self):
+        rendered_result = render_template("login_page.html")
+        return make_response(rendered_result, status.HTTP_200_OK, self.DEFAULT_HEADERS)
+
+    @logout_required
+    def post(self):
+        log_in_args = request.form
+        user_credentials = DatabaseDispatcher().get_user_credentials()
+        if self._is_superuser(log_in_args, user_credentials):
+            return redirect(url_for("incense"), code=302)
+        else:
+            return {"result": "BAD REQUEST!"}, status.HTTP_400_BAD_REQUEST
+
+    @staticmethod
+    def _is_superuser(log_in_args, user_credentials):
+        session["is_logged_in"] = False
+        username, password = log_in_args["username"], log_in_args["password"]
+        superuser_username, superuser_password = user_credentials[1], user_credentials[2]
+        if username == superuser_username and password == superuser_password:
+            session["is_logged_in"] = True
+        return session["is_logged_in"]
+
+
+class LogoutPage(Resource):
+    DEFAULT_HEADERS = {'Content-Type': 'text/html'}
+
+    @login_required
+    def get(self):
+        session.clear()
+        return redirect(url_for("login"), code=302)
+
+
+API.add_resource(MainPage, "/incense", endpoint="incense")
+API.add_resource(LoginPage, "/login", endpoint="login")
+API.add_resource(LogoutPage, "/logout", endpoint="logout")
 
 
 if __name__ == "__main__":
