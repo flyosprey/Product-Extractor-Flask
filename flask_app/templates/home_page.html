@@ -9,12 +9,18 @@
 		<title>Massively by HTML5 UP</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href=" {{ url_for('static',filename='styles/home_page/main.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static',filename='styles/home_page/main.css') }}" />
 		<link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/home_page/table_results.css') }}">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 		<noscript><link rel="stylesheet" href="{{ url_for('static',filename='styles/home_page/noscript.css') }}" /></noscript>
 	</head>
 	<body class="is-preload">
+		<nav class="navbar navbar-dark bg-dark">
+			<div class="ms-auto">
+				<a href="{{ url_for('logout') }}" class="btn btn-outline-light mb-1">Logout</a>
+			</div>
+		</nav>
 
 		<!-- Wrapper -->
 			<div id="wrapper" class="fade-in">
@@ -39,31 +45,26 @@
 													<h1>Оновити каталог товарів</h1>
 													<br />
 													<br />
-													<form id="scrape-form" method="post" action="http://127.0.0.1:5000/incense">
+													<form id="scrape-form" method="post" action="{{ url_for('incense') }}">
 														<input type="text" name="url" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Посилання" /><br />
 														<br />
-														<input id="extract_data" type="submit" name="submitbutton" value="Оновити" />
+														<input id="extract_data" type="submit" value="Оновити" />
 													</form>
 												</div>
 											</ul>
 										</article>
 										<article>
 											<ul class="actions special">
-												<div class="w3-panel w3-card" style="height: 800px;">
+												<div class="w3-panel w3-card" style="height: 450px;">
 													<h1>Подивитись наявні товари</h1>
 													<br />
 													<br />
 													<form id="get-data-form" method="post" action="http://127.0.0.1:5000/incense">
-														<input type="text" name="category" style="width: 300px;" placeholder="Категорія" /><br />
+														<input type="text" name="category_name" style="width: 300px;" placeholder="Категорія" /><br />
 														<input type="text" name="title" style="width: 300px;" placeholder="Назва товару" /><br />
-														<input type="text" name="price_from" pattern="(\d+)" style="width: 300px;" placeholder="Ціна від" /><br />
-														<input type="text" name="price_till" pattern="(\d+)" style="width: 300px;" placeholder="Ціна до" /><br />
-														<input type="text" name="exact_date" pattern="(\d+\.\d+\.\d+)" style="width: 300px;" placeholder="Дата збору" /><br />
-														<input type="text" name="date_period_hours" pattern="(\d+)" style="width: 300px;" placeholder="Період часу в годинах" /><br />
-														<input type="text" name="date_period_days" pattern="(\d+)" style="width: 300px;" placeholder="Період часу в днях" /><br />
-														<input type="text" name="limit" style="width: 300px;" required pattern="(\d+)" placeholder="Ліміт" /><br />
+														<input type="text" name="limit" style="width: 300px;" pattern="(\d+)" placeholder="Ліміт" /><br />
 														<br />
-														<input id="show_data" type="submit" name="submitbutton" value="Подивитись" />
+														<input id="show_data" type="submit" value="Подивитись" />
 													</form>
 												</div>
 											</ul>
@@ -116,6 +117,5 @@
 			<script src="{{ url_for('static',filename='js/home_page/breakpoints.min.js') }}"></script>
 			<script src="{{ url_for('static',filename='js/home_page/util.js') }}"></script>
 			<script src="{{ url_for('static',filename='js/home_page/main.js') }}"></script>
-
 	</body>
 </html>
