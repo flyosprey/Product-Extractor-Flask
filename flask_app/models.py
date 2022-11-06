@@ -44,9 +44,6 @@ class SaveData:
                              "'%(image_link)s', '%(deep_link)s', %(opt_price)s, %(drop_price)s, %(retail_price)s, "
                              "'%(currency)s', '%(status)s', '%(date_of_parsing)s')" % item)
         self.connection.commit()
-        self.close_spider()
-        return item
-
-    def close_spider(self):
         self.cur.close()
         self.connection.close()
+        return item
