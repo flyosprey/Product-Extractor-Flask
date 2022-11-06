@@ -8,6 +8,11 @@ from flask import redirect, url_for, session
 from decorators import logout_required, login_required
 
 
+@APP.errorhandler(status.HTTP_404_NOT_FOUND)
+def resource_not_found(request):
+    return redirect(url_for("incense"), code=status.HTTP_302_FOUND)
+
+
 class MainPage(Resource):
     DEFAULT_HEADERS = {'Content-Type': 'text/html'}
 
