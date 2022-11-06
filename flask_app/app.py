@@ -39,7 +39,7 @@ class LoginPage(Resource):
 
     @logout_required
     def get(self):
-        rendered_result = render_template("login_page.html")
+        rendered_result = render_template("login_page.html", result={})
         return make_response(rendered_result, status.HTTP_200_OK, self.DEFAULT_HEADERS)
 
     @logout_required
@@ -47,9 +47,11 @@ class LoginPage(Resource):
         log_in_args = request.form
         user_credentials = DatabaseDispatcher().get_user_credentials()
         if self._is_superuser(log_in_args, user_credentials):
-            return redirect(url_for("incense"), code=302)
+            return redirect(url_for("incense"), code=status.HTTP_302_FOUND)
         else:
-            return {"result": "BAD REQUEST!"}, status.HTTP_400_BAD_REQUEST
+            result = {"error": {"message": "Credentials are wrong"}}
+            rendered_result = render_template("login_page.html", result=result)
+            return make_response(rendered_result, status.HTTP_401_UNAUTHORIZED, self.DEFAULT_HEADERS)
 
     @staticmethod
     def _is_superuser(log_in_args, user_credentials):
@@ -67,7 +69,7 @@ class LogoutPage(Resource):
     @login_required
     def get(self):
         session.clear()
-        return redirect(url_for("login"), code=302)
+        return redirect(url_for("login"), code=status.HTTP_302_FOUND)
 
 
 API.add_resource(MainPage, "/incense", endpoint="incense")
