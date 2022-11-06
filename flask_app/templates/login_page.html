@@ -54,11 +54,11 @@
 					<div class="container-login100-form-btn">
 						<input class="login100-form-btn" id="login" type="submit" value="Login" />
 					</div>
-
-
-
-					<div class="text-center p-t-136">
-					</div>
+					<br/>
+					{% if result.get("error") %}
+						<h5 style="text-align: center;">{{ result["error"]["message"] }}</h5>
+					{% endif %}
+					<div class="text-center p-t-136"></div>
 				</form>
 			</div>
 		</div>
