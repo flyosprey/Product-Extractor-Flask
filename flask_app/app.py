@@ -62,7 +62,7 @@ class LoginPage(Resource):
     def _is_superuser(log_in_args, user_credentials):
         session["is_logged_in"] = False
         username, password = log_in_args["username"], log_in_args["password"]
-        superuser_username, superuser_password = user_credentials[1], user_credentials[2]
+        superuser_username, superuser_password = user_credentials["username"], user_credentials["password"]
         if username == superuser_username and password == superuser_password:
             session["is_logged_in"] = True
         return session["is_logged_in"]
