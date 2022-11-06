@@ -88,15 +88,15 @@
 										</li>
 										  {% for item in result %}
 											<li class="table-row" style="width: 800px;">
-											  <div class="col col-1" data-label="Номер">{{ item[0] }}</div>
-											  <div class="col col-2" data-label="Назва">{{ item[2] }}</div>
-											  <div class="col col-3" data-label="Оптова ціна"><span class="green">{{ item[5] }}</span></div>
-											  <div class="col col-4" data-label="Дропшипінгова ціна"><span class="yellow">{{ item[6] }}</span></div>
-											  <div class="col col-4" data-label="Роздрібна ціна"><span>{{ item[7] }}</span></div>
-											  <div class="col col-4" data-label="Валюта">{{ item[8] }}</div>
-											  <div class="col col-4" data-label="Посилання на картинку"><a href="{{ item[3] }}">Фото</a></div>
-											  <div class="col col-4" data-label="Посилання на сайт"><a href="{{ item[4] }}">Товар</a></div>
-											  <div class="col col-4" data-label="Дата збору товара">{{ item[10] }}</div>
+											  <div class="col col-1" data-label="Номер">{{ item["id"] }}</div>
+											  <div class="col col-2" data-label="Назва">{{ item["title"] }}</div>
+											  <div class="col col-3" data-label="Оптова ціна"><span class="green">{{ item["opt_price"] }}</span></div>
+											  <div class="col col-4" data-label="Дропшипінгова ціна"><span class="yellow">{{ item["drop_price"] }}</span></div>
+											  <div class="col col-4" data-label="Роздрібна ціна"><span>{{ item["retail_price"] }}</span></div>
+											  <div class="col col-4" data-label="Валюта">{{ item["currency"] }}</div>
+											  <div class="col col-4" data-label="Посилання на картинку"><a href="{{ item['iimage_link'] }}">Фото</a></div>
+											  <div class="col col-4" data-label="Посилання на сайт"><a href="{{ item['deep_link'] }}">Товар</a></div>
+											  <div class="col col-4" data-label="Дата збору товара">{{ item["date_of_parsing"] }}</div>
 											</li>
 										  {% endfor %}
 									  </ul>
