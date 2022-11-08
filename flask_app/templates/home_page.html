@@ -58,7 +58,7 @@
 													<h1>Подивитись наявні товари</h1>
 													<br />
 													<br />
-													<form id="get-data-form" method="post" action="http://127.0.0.1:5000/incense">
+													<form id="get-data-form" method="post" action="{{ url_for('incense') }}">
 														<input type="text" name="category_name" style="width: 300px;" placeholder="Категорія" /><br />
 														<input type="text" name="title" style="width: 300px;" placeholder="Назва товару" /><br />
 														<input type="text" name="limit" style="width: 300px;" pattern="(\d+)" placeholder="Ліміт" /><br />
