@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>PALOCHKA UA</title>
+		<title>Incense Extractor</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="{{ url_for('static',filename='styles/home_page/main.css') }}" />
@@ -25,7 +25,7 @@
 			<div id="wrapper" class="fade-in">
 				<!-- Header -->
 					<header id="header">
-						<a href="index.html" class="logo">Коханій дружині</a>
+						<a href="index.html" class="logo">Incense Extractor</a>
 					</header>
 
 				<!-- Main -->
@@ -35,17 +35,17 @@
 							<article class="post featured">
 								<section>
 									<header class="major">
-										<h2>Функції</h2>
+										<h2>Options</h2>
 									</header>
 									<div class="features">
 										<article>
 											<ul class="actions special">
 												<div class="w3-panel w3-card" style="height: 400px;">
-													<h1>Оновити каталог товарів</h1>
+													<h1>Update Catalog</h1>
 													<br />
 													<br />
 													<form id="scrape-form" method="post" action="{{ url_for('incense') }}">
-														<input type="text" name="url" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="Посилання" /><br />
+														<input type="text" name="url" style="width: 300px;" required pattern="https://zamorskiepodarki.com/uk/(.*)" placeholder="URL" /><br />
 														<br />
 														<input id="extract_data" type="submit" value="Оновити" />
 													</form>
@@ -55,15 +55,15 @@
 										<article>
 											<ul class="actions special">
 												<div class="w3-panel w3-card" style="height: 450px;">
-													<h1>Подивитись наявні товари</h1>
+													<h1>Show Existing Products</h1>
 													<br />
 													<br />
 													<form id="get-data-form" method="post" action="{{ url_for('incense') }}">
-														<input type="text" name="category_name" style="width: 300px;" placeholder="Категорія" /><br />
-														<input type="text" name="title" style="width: 300px;" placeholder="Назва товару" /><br />
-														<input type="text" name="limit" style="width: 300px;" pattern="(\d+)" placeholder="Ліміт" /><br />
+														<input type="text" name="category_name" style="width: 300px;" placeholder="Category" /><br />
+														<input type="text" name="title" style="width: 300px;" placeholder="Product" /><br />
+														<input type="text" name="limit" style="width: 300px;" pattern="(\d+)" placeholder="Limit" /><br />
 														<br />
-														<input id="show_data" type="submit" value="Подивитись" />
+														<input id="show_data" type="submit" value="Show" />
 													</form>
 												</div>
 											</ul>
@@ -73,30 +73,30 @@
 								<br/>
 								{% if result %}
 									<div class="container">
-									  <h2>Таблиця товарів</h2>
+									  <h2>Products Table</h2>
 									  <ul class="responsive-table">
 										<li class="table-header" style="width: 800px;">
 										  <div class="col col-1">№</div>
-										  <div class="col col-3">Назва</div>
-										  <div class="col col-3">Опт</div>
-										  <div class="col col-4">Дроп</div>
-										  <div class="col col-4">Роздріб</div>
-										  <div class="col col-4">Валюта</div>
-										  <div class="col col-4">Фото</div>
-										  <div class="col col-4">Сайт</div>
-										  <div class="col col-4">Дата</div>
+										  <div class="col col-3">Name</div>
+										  <div class="col col-3">Wholesale</div>
+										  <div class="col col-4">Dropsh</div>
+										  <div class="col col-4">Retail</div>
+										  <div class="col col-4">Currency</div>
+										  <div class="col col-4">Photo</div>
+										  <div class="col col-4">Site</div>
+										  <div class="col col-4">Date</div>
 										</li>
 										  {% for item in result %}
 											<li class="table-row" style="width: 800px;">
-											  <div class="col col-1" data-label="Номер">{{ item["id"] }}</div>
-											  <div class="col col-2" data-label="Назва">{{ item["title"] }}</div>
-											  <div class="col col-3" data-label="Оптова ціна"><span class="green">{{ item["opt_price"] }}</span></div>
-											  <div class="col col-4" data-label="Дропшипінгова ціна"><span class="yellow">{{ item["drop_price"] }}</span></div>
-											  <div class="col col-4" data-label="Роздрібна ціна"><span>{{ item["retail_price"] }}</span></div>
-											  <div class="col col-4" data-label="Валюта">{{ item["currency"] }}</div>
-											  <div class="col col-4" data-label="Посилання на картинку"><a href="{{ item['iimage_link'] }}">Фото</a></div>
-											  <div class="col col-4" data-label="Посилання на сайт"><a href="{{ item['deep_link'] }}">Товар</a></div>
-											  <div class="col col-4" data-label="Дата збору товара">{{ item["date_of_parsing"] }}</div>
+											  <div class="col col-1" data-label="ID">{{ item["id"] }}</div>
+											  <div class="col col-2" data-label="Name">{{ item["title"] }}</div>
+											  <div class="col col-3" data-label="Wholesale price"><span class="green">{{ item["opt_price"] }}</span></div>
+											  <div class="col col-4" data-label="Dropshipping price"><span class="yellow">{{ item["drop_price"] }}</span></div>
+											  <div class="col col-4" data-label="Retail price"><span>{{ item["retail_price"] }}</span></div>
+											  <div class="col col-4" data-label="Currency">{{ item["currency"] }}</div>
+											  <div class="col col-4" data-label="Image's link"><a href="{{ item['iimage_link'] }}">Image</a></div>
+											  <div class="col col-4" data-label="Site url"><a href="{{ item['deep_link'] }}">Product</a></div>
+											  <div class="col col-4" data-label="Extracting date">{{ item["date_of_parsing"] }}</div>
 											</li>
 										  {% endfor %}
 									  </ul>
