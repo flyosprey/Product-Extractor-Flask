@@ -16,22 +16,22 @@ def resource_not_found(request):
 class MainPage(Resource):
     DEFAULT_HEADERS = {'Content-Type': 'text/html'}
 
-    @login_required
+    # @login_required
     def get(self):
         rendered_result = render_template("home_page.html")
         return make_response(rendered_result, status.HTTP_200_OK, self.DEFAULT_HEADERS)
 
-    @login_required
+    # @login_required
     def post(self):
         extract_args = request.form if "url" in request.form else None
         show_args = request.form if "limit" in request.form else None
         if extract_args:
-            table_name = "Таблиця щойно зібраних товарів"
+            table_name = "Table of extracted data"
             result = ScrapySide().parse_data(extract_args["url"])
             rendered_result = render_template("home_page.html", result=result, table_name=table_name)
             return make_response(rendered_result, status.HTTP_200_OK, self.DEFAULT_HEADERS)
         elif show_args:
-            table_name = "Таблиця вже наявних товарів"
+            table_name = "Table of already existing data"
             result = DatabaseDispatcher().get_exist_data(show_args)
             rendered_result = render_template("home_page.html", result=result, table_name=table_name)
             return make_response(rendered_result, status.HTTP_200_OK, self.DEFAULT_HEADERS)
