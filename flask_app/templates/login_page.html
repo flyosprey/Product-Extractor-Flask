@@ -53,6 +53,8 @@
 
 					<div class="container-login100-form-btn">
 						<input class="login100-form-btn" id="login" type="submit" value="Login" />
+						<br/>
+						<a href="{{ url_for('signup') }}">Sign Up</a>
 					</div>
 					<br/>
 					{% if result.get("error") %}
