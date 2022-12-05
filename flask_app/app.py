@@ -71,22 +71,14 @@ class LoginPage(Resource):
     @logout_required
     def post(self):
         log_in_args = request.form
-        user_credentials = DatabaseDispatcher().get_user_credentials()
-        if self._is_superuser(log_in_args, user_credentials):
+        is_user_exist = DatabaseDispatcher().is_user_exist(log_in_args)
+        if is_user_exist:
+            session["is_logged_in"] = True
             return redirect(url_for("incense"), code=status.HTTP_302_FOUND)
         else:
             result = {"error": {"message": "Credentials are wrong"}}
             rendered_result = render_template("login_page.html", result=result)
             return make_response(rendered_result, status.HTTP_401_UNAUTHORIZED, self.DEFAULT_HEADERS)
-
-    @staticmethod
-    def _is_superuser(log_in_args, user_credentials):
-        session["is_logged_in"] = False
-        username, password = log_in_args["username"], log_in_args["password"]
-        superuser_username, superuser_password = user_credentials["username"], user_credentials["password"]
-        if username == superuser_username and password == superuser_password:
-            session["is_logged_in"] = True
-        return session["is_logged_in"]
 
 
 class LogoutPage(Resource):
