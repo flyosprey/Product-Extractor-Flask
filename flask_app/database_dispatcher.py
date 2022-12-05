@@ -15,10 +15,10 @@ class DatabaseDispatcher:
         results = self._get_data(query)
         return results
 
-    def get_user_credentials(self):
-        query = "SELECT * FROM incense_user"
+    def is_user_exist(self, user_credentials):
+        query = "SELECT * FROM users WHERE username='%(username)s' AND password='%(password)s'" % user_credentials
         user_credentials = self._get_data(query)
-        return user_credentials[0]
+        return bool(user_credentials)
 
     @staticmethod
     def _build_full_query(where_query_part, limit_query_part) -> str:
