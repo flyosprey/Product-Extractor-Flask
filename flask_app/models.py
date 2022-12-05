@@ -47,3 +47,35 @@ class SaveData:
         self.cur.close()
         self.connection.close()
         return item
+
+
+class Users:
+    def __init__(self):
+        self.connection = psycopg2.connect(host=HOSTNAME, user=USERNAME, password=PASSWORD, dbname=DATABASE)
+        self.cur = self.connection.cursor()
+        logging.debug("CREATING DATABASE")
+        self.cur.execute("""
+                        CREATE TABLE IF NOT EXISTS users (
+                        id SERIAL PRIMARY KEY,
+                        username TEXT NOT NULL UNIQUE,
+                        password TEXT NOT NULL
+                        );
+                        """)
+        self.connection.commit()
+
+    def create_user(self, user_credentials):
+        result = {}
+        query = "SELECT * FROM users WHERE username='%(username)s' AND password='%(password)s'" % user_credentials
+        self.cur.execute(query)
+        user = self.cur.fetchone()
+        if user:
+            logging.debug("USER ALREADY EXISTS: '%s'", user_credentials["username"])
+            result = {"error": {"message": "Such user already exists"}}
+        else:
+            logging.debug("CREATING USER")
+            self.cur.execute("INSERT INTO users "
+                             "(username, password) VALUES (%(username)s, %(password)s)", user_credentials)
+        self.connection.commit()
+        self.cur.close()
+        self.connection.close()
+        return result
