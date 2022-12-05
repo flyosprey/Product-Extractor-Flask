@@ -3,13 +3,13 @@ import psycopg2
 from credentials import HOSTNAME, USERNAME, PASSWORD, DATABASE
 
 
-class SaveData:
+class IncenseProducts:
     def __init__(self):
         self.connection = psycopg2.connect(host=HOSTNAME, user=USERNAME, password=PASSWORD, dbname=DATABASE)
         self.cur = self.connection.cursor()
         logging.debug("CREATING DATABASE")
         self.cur.execute("""
-                CREATE TABLE IF NOT EXISTS incense_flask_dev(
+                CREATE TABLE IF NOT EXISTS incenses(
                     id serial PRIMARY KEY, 
                     category_name VARCHAR(120),
                     title VARCHAR(200),
@@ -30,7 +30,7 @@ class SaveData:
         result = self.cur.fetchone()
         if result:
             logging.debug("ITEM IS ALREADY IN EXIST: '%s'", item['title'])
-            self.cur.execute("UPDATE incense_flask_dev SET status = 'OLD', "
+            self.cur.execute("UPDATE incense SET status = 'OLD', "
                              "opt_price = %(opt_price)s, "
                              "drop_price = %(drop_price)s, "
                              "retail_price = %(retail_price)s, "
@@ -38,7 +38,7 @@ class SaveData:
                              "WHERE title = '%(title)s'" % item)
         else:
             logging.debug("INSERTING ITEM")
-            self.cur.execute("INSERT INTO incense_flask_dev "
+            self.cur.execute("INSERT INTO incense "
                              "(category_name, title, image_link, deep_link, opt_price, drop_price, retail_price, "
                              "currency, status, date_of_parsing) VALUES ('%(category_name)s', '%(title)s', "
                              "'%(image_link)s', '%(deep_link)s', %(opt_price)s, %(drop_price)s, %(retail_price)s, "

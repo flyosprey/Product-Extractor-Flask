@@ -5,7 +5,7 @@ from scrapy.signalmanager import dispatcher
 from scrapy.crawler import CrawlerRunner
 from incense.spiders.zamorskiepodarki import ZamorskiepodarkiSpider
 from flask_app.database_dispatcher import DatabaseDispatcher
-from models import SaveData
+from models import IncenseProducts
 
 crochet.setup()
 CRAWL_RUNNER = CrawlerRunner()
@@ -24,7 +24,7 @@ class ScrapySide:
 
     def crawler_result(self, item):
         self.number_of_items += 1
-        save_obj = SaveData()
+        save_obj = IncenseProducts()
         save_obj.process_item(item)
 
     @crochet.run_in_reactor

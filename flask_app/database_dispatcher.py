@@ -11,7 +11,7 @@ class DatabaseDispatcher:
         return results
 
     def get_extracted_data(self, limit) -> list:
-        query = f"SELECT * FROM incense_flask_dev ORDER BY date_of_parsing DESC LIMIT {limit}"
+        query = f"SELECT * FROM incenses ORDER BY date_of_parsing DESC LIMIT {limit}"
         results = self._get_data(query)
         return results
 
@@ -22,7 +22,7 @@ class DatabaseDispatcher:
 
     @staticmethod
     def _build_full_query(where_query_part, limit_query_part) -> str:
-        full_query = f"SELECT * FROM incense_flask_dev {where_query_part} " \
+        full_query = f"SELECT * FROM incenses {where_query_part} " \
                      f"ORDER BY date_of_parsing DESC {limit_query_part}"
         full_query = " ".join(full_query.split())
         return full_query
