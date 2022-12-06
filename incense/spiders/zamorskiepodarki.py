@@ -11,9 +11,12 @@ class ZamorskiepodarkiSpider(scrapy.Spider):
     allowed_domains = ["zamorskiepodarki.com"]
     start_urls = []
 
-    def __init__(self, url_to_parse="", **kwargs):
+    def __init__(self, url_to_parse="", user_id=None, **kwargs):
         self.headers = get_headers()
         self.start_urls.append(url_to_parse)
+        self.user_id = user_id
+        if not self.user_id:
+            raise Exception("user_id is None in scrape")
         super().__init__(**kwargs)
         self.images, self.pages, self.image_index = {"images": []}, None, None
 
@@ -51,7 +54,7 @@ class ZamorskiepodarkiSpider(scrapy.Spider):
         prices_data = self._get_prices_data(response)
         general_product_data = self._get_general_product_data(response)
         logging.debug("IMAGE SHOULD BE DOWNLOADED")
-        incense_item = {**general_product_data, **prices_data}
+        incense_item = {"user_id": self.user_id, **general_product_data, **prices_data}
         yield incense_item
 
     @staticmethod

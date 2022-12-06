@@ -4,40 +4,45 @@ from credentials import HOSTNAME, USERNAME, PASSWORD, DATABASE
 
 
 class DatabaseDispatcher:
-    def get_exist_data(self, filters) -> list:
-        where_query_part, limit_query_part = self._build_where_and_limit_query_part(filters)
+    def get_exist_data(self, filters, user_id) -> list:
+        where_query_part, limit_query_part = self._build_where_and_limit_query_part(filters, user_id)
         full_query = self._build_full_query(where_query_part, limit_query_part)
         results = self._get_data(full_query)
         return results
 
-    def get_extracted_data(self, limit) -> list:
-        query = f"SELECT * FROM incenses ORDER BY date_of_parsing DESC LIMIT {limit}"
+    def get_extracted_data(self, limit, user_id) -> list:
+        query = "SELECT * FROM incenses WHERE user_id=%s ORDER BY date_of_parsing DESC LIMIT %s" % (user_id, limit)
         results = self._get_data(query)
         return results
 
-    def is_user_exist(self, user_credentials):
+    def get_user(self, user_credentials):
         query = "SELECT * FROM users WHERE username='%(username)s' AND password='%(password)s'" % user_credentials
         user_credentials = self._get_data(query)
-        return bool(user_credentials)
+        if not user_credentials:
+            result = {"error": {"message": "Credentials are wrong"}}
+        else:
+            result = {"user_id": user_credentials[0]["id"]}
+        return result
 
     @staticmethod
     def _build_full_query(where_query_part, limit_query_part) -> str:
-        full_query = f"SELECT * FROM incenses {where_query_part} " \
-                     f"ORDER BY date_of_parsing DESC {limit_query_part}"
+        full_query = "SELECT * FROM incenses %s ORDER BY date_of_parsing DESC %s" \
+                     % (where_query_part, limit_query_part)
         full_query = " ".join(full_query.split())
         return full_query
 
-    def _build_where_and_limit_query_part(self, filters) -> (str, str):
-        where_query_part, filters, limit = "", {**filters}, None
+    def _build_where_and_limit_query_part(self, filters, user_id) -> (str, str):
+        where_query_part, like_query_part, filters, limit = "", "", {**filters}, None
         for key in filters:
             field = self._get_field(key, filters)
             if key == "limit" and filters[key]:
                 limit = filters[key]
                 continue
-            where_query_part += f"{key} LIKE {field}, " if field else ""
-        where_query_part = where_query_part.rstrip(", ")
-        where_query_part = "WHERE " + where_query_part if where_query_part else where_query_part
-        limit_query_part = f"LIMIT {limit}" if limit else ""
+            like_query_part += "%s LIKE %s, " % (key, field) if field else ""
+        like_query_part = like_query_part.rstrip(", ")
+        like_query_part = " AND %s" % like_query_part if like_query_part else ""
+        where_query_part = "WHERE user_id=%s%s" % (user_id, like_query_part)
+        limit_query_part = "LIMIT %s" % limit if limit else ""
         return where_query_part, limit_query_part
 
     @staticmethod

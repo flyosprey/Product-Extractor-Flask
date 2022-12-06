@@ -15,11 +15,11 @@ class ScrapySide:
     def __init__(self):
         self.scrape_complete, self.number_of_items = False, 1
 
-    def parse_data(self, url_to_parse):
-        self.scrape_with_crochet(url_to_parse=url_to_parse)
+    def parse_data(self, url_to_parse, user_id):
+        self.scrape_with_crochet(url_to_parse=url_to_parse, user_id=user_id)
         while self.scrape_complete is False:
             time.sleep(5)
-        result = DatabaseDispatcher().get_extracted_data(self.number_of_items)
+        result = DatabaseDispatcher().get_extracted_data(self.number_of_items, user_id)
         return result
 
     def crawler_result(self, item):
@@ -28,9 +28,9 @@ class ScrapySide:
         save_obj.process_item(item)
 
     @crochet.run_in_reactor
-    def scrape_with_crochet(self, url_to_parse):
+    def scrape_with_crochet(self, url_to_parse, user_id):
         dispatcher.connect(self.crawler_result, signal=signals.item_scraped)
-        eventual = CRAWL_RUNNER.crawl(ZamorskiepodarkiSpider, url_to_parse=url_to_parse)
+        eventual = CRAWL_RUNNER.crawl(ZamorskiepodarkiSpider, url_to_parse=url_to_parse, user_id=user_id)
         eventual.addCallback(self.finished_scrape)
         return eventual
 

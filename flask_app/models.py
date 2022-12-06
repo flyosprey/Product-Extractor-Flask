@@ -10,7 +10,8 @@ class IncenseProducts:
         logging.debug("CREATING DATABASE")
         self.cur.execute("""
                 CREATE TABLE IF NOT EXISTS incenses(
-                    id serial PRIMARY KEY, 
+                    id SERIAL PRIMARY KEY, 
+                    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
                     category_name VARCHAR(120),
                     title VARCHAR(200),
                     image_link TEXT,
@@ -26,11 +27,11 @@ class IncenseProducts:
         self.connection.commit()
 
     def process_item(self, item):
-        self.cur.execute("SELECT * FROM incense_flask_dev WHERE title = '%s'" % item['title'])
+        self.cur.execute("SELECT * FROM incenses WHERE title = '%s'" % item['title'])
         result = self.cur.fetchone()
         if result:
             logging.debug("ITEM IS ALREADY IN EXIST: '%s'", item['title'])
-            self.cur.execute("UPDATE incense SET status = 'OLD', "
+            self.cur.execute("UPDATE incenses SET status = 'OLD', "
                              "opt_price = %(opt_price)s, "
                              "drop_price = %(drop_price)s, "
                              "retail_price = %(retail_price)s, "
@@ -38,9 +39,9 @@ class IncenseProducts:
                              "WHERE title = '%(title)s'" % item)
         else:
             logging.debug("INSERTING ITEM")
-            self.cur.execute("INSERT INTO incense "
-                             "(category_name, title, image_link, deep_link, opt_price, drop_price, retail_price, "
-                             "currency, status, date_of_parsing) VALUES ('%(category_name)s', '%(title)s', "
+            self.cur.execute("INSERT INTO incenses "
+                             "(user_id, category_name, title, image_link, deep_link, opt_price, drop_price, retail_price, "
+                             "currency, status, date_of_parsing) VALUES (%(user_id)s, '%(category_name)s', '%(title)s', "
                              "'%(image_link)s', '%(deep_link)s', %(opt_price)s, %(drop_price)s, %(retail_price)s, "
                              "'%(currency)s', '%(status)s', '%(date_of_parsing)s')" % item)
         self.connection.commit()
@@ -64,7 +65,6 @@ class Users:
         self.connection.commit()
 
     def create_user(self, user_credentials):
-        result = {}
         query = "SELECT * FROM users WHERE username='%(username)s' AND password='%(password)s'" % user_credentials
         self.cur.execute(query)
         user = self.cur.fetchone()
@@ -75,6 +75,9 @@ class Users:
             logging.debug("CREATING USER")
             self.cur.execute("INSERT INTO users "
                              "(username, password) VALUES (%(username)s, %(password)s)", user_credentials)
+            self.cur.execute("SELECT * FROM users WHERE username=%(username)s", user_credentials)
+            user = self.cur.fetchone()
+            result = {"user_id": user[0]}
         self.connection.commit()
         self.cur.close()
         self.connection.close()
