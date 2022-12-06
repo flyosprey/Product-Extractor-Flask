@@ -11,7 +11,7 @@ class LoginPage(Resource):
 
     @logout_required
     def get(self):
-        rendered_result = render_template("login_page.html", result={})
+        rendered_result = render_template("login.html", result={})
         return make_response(rendered_result, status.HTTP_200_OK, self.DEFAULT_HEADERS)
 
     @logout_required
@@ -20,7 +20,7 @@ class LoginPage(Resource):
         result = DatabaseDispatcher().get_user(log_in_args)
         if result.get("error"):
             result = {"error": {"message": "Credentials are wrong"}}
-            rendered_result = render_template("login_page.html", result=result)
+            rendered_result = render_template("login.html", result=result)
             return make_response(rendered_result, status.HTTP_401_UNAUTHORIZED, self.DEFAULT_HEADERS)
         else:
             session["is_logged_in"] = True

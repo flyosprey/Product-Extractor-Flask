@@ -11,7 +11,7 @@ class SignUpPage(Resource):
 
     @logout_required
     def get(self):
-        rendered_result = render_template("signup_page.html", result={})
+        rendered_result = render_template("signup.html", result={})
         return make_response(rendered_result, status.HTTP_200_OK, self.DEFAULT_HEADERS)
 
     @logout_required
@@ -19,7 +19,7 @@ class SignUpPage(Resource):
         log_in_args = request.form
         result = Users().create_user(log_in_args)
         if result.get("error"):
-            rendered_result = render_template("signup_page.html", result=result)
+            rendered_result = render_template("signup.html", result=result)
             return make_response(rendered_result, status.HTTP_403_FORBIDDEN, self.DEFAULT_HEADERS)
         else:
             session["is_logged_in"] = True

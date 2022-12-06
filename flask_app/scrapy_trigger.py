@@ -11,7 +11,7 @@ crochet.setup()
 CRAWL_RUNNER = CrawlerRunner()
 
 
-class ScrapySide:
+class ScrapyTrigger:
     def __init__(self):
         self.scrape_complete, self.number_of_items = False, 1
 
