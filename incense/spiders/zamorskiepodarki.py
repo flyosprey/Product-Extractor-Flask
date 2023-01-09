@@ -63,7 +63,8 @@ class ZamorskiepodarkiSpider(scrapy.Spider):
         category_name = \
             response.xpath("//ul[@class='breadcrumb']//li[@itemprop='itemListElement']//span/text()")[-1].get()
         image_link = response.xpath("//a[@class='thumbnail']/@href").get()
-        title = response.xpath("//a[@class='thumbnail']/@title").get().replace("(", "").replace(")", "")
+        title = response.xpath("//a[@class='thumbnail']/@title").get()
+        title = title.replace("(", "").replace(")", "").replace("'", "`")
         general_product_data = {"deep_link": deep_link, "date_of_parsing": date_of_parsing, "status": status,
                                 "image_link": image_link, "title": title, "category_name": category_name.strip()}
         return general_product_data

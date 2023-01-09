@@ -10,24 +10,7 @@
 
 <h1>How to Use it</h1>
 <ol>
-    <li>Install the repository to local machine</li>
-    <li>Create venv and install all requirements</li>
-    <li>Create PostgresQL database</li>
-    <li>Then create <b>.env</b> in the <b>flask_app</b> directory as it is shown in <b>.env.example</b></li>
-    <li>Create requirement variables for PostgresQL and Flask</li>
+    <li>Create .env and create Flask secret key</li>
+    <li>Run docker-compose up</li>
+    <li>if it does not work download postgresql image - docker pull postgres:10 </li>
 </ol>
-
-<h4>Requirement variables for:</h4>
-<h4>PostgresQL:</h4>
-<ol style="font-weight: bold;">
-    <li>HOSTNAME</li>
-    <li>USERNAME</li>
-    <li>PASSWORD</li>
-    <li>DATABASE</li>
-</ol>
-<h4>Flask:</h4>
-<ol style="font-weight: bold;">
-    <li>SECRET_KEY</li>
-</ol>
-
-<h3>Finally run app.py as Flask</h3>

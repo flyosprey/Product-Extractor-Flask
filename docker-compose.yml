@@ -1,0 +1,28 @@
+version: '2.1'
+services:
+  postgres:
+    restart: always
+    image: postgres:10
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker_incense
+      - POSTGRES_DB=incense
+    volumes:
+      - ./postgres-data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+  app:
+    restart: always
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PASSWORD=docker_incense
+      - POSTGRES_DB=incense
+      - POSTGRES_POPT=5434
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    volumes:
+      - .:/flask_app/app

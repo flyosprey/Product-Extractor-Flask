@@ -1,8 +1,10 @@
+import os
 from decouple import config
 
 
-HOSTNAME = config('HOSTNAME')
-USERNAME = config('USERNAME')
-PASSWORD = config('PASSWORD')
-DATABASE = config('DATABASE')
+HOSTNAME = os.getenv('POSTGRES_HOST')
+USERNAME = os.getenv('POSTGRES_USER')
+PASSWORD = os.getenv('POSTGRES_PASSWORD')
+DATABASE = os.getenv('POSTGRES_DB')
+PORT = os.getenv('POSTGRES_PORT')
 SECRET_KEY = config('SECRET_KEY')
