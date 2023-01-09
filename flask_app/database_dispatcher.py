@@ -1,6 +1,6 @@
 import logging
 import psycopg2.extras
-from credentials import HOSTNAME, USERNAME, PASSWORD, DATABASE
+from credentials import HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT
 
 
 class DatabaseDispatcher:
@@ -54,7 +54,7 @@ class DatabaseDispatcher:
 
     @staticmethod
     def _get_data(query) -> list:
-        connection = psycopg2.connect(host=HOSTNAME, user=USERNAME, password=PASSWORD, dbname=DATABASE)
+        connection = psycopg2.connect(host=HOSTNAME, password=PASSWORD, user=USERNAME, dbname=DATABASE, port=PORT)
         cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         logging.debug("CONNECTED TO DB")
         cur.execute(query)

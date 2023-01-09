@@ -1,11 +1,11 @@
 import logging
 import psycopg2
-from credentials import HOSTNAME, USERNAME, PASSWORD, DATABASE
+from credentials import HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT
 
 
 class IncenseProducts:
     def __init__(self):
-        self.connection = psycopg2.connect(host=HOSTNAME, user=USERNAME, password=PASSWORD, dbname=DATABASE)
+        self.connection = psycopg2.connect(host=HOSTNAME, password=PASSWORD, user=USERNAME, dbname=DATABASE, port=PORT)
         self.cur = self.connection.cursor()
         logging.debug("CREATING DATABASE")
         self.cur.execute("""
@@ -52,7 +52,7 @@ class IncenseProducts:
 
 class Users:
     def __init__(self):
-        self.connection = psycopg2.connect(host=HOSTNAME, user=USERNAME, password=PASSWORD, dbname=DATABASE)
+        self.connection = psycopg2.connect(host=HOSTNAME, password=PASSWORD, user=USERNAME, dbname=DATABASE, port=PORT)
         self.cur = self.connection.cursor()
         logging.debug("CREATING DATABASE")
         self.cur.execute("""
