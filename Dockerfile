@@ -5,8 +5,6 @@ WORKDIR /app
 # copy the requirements file into the image
 COPY requirements.txt requirements.txt
 
-# switch working directory
-
 # install the dependencies and packages in the requirements file
 RUN pip install --upgrade pip
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
